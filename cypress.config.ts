@@ -2,6 +2,7 @@ import { defineConfig } from "cypress";
 import { allureCypress } from "allure-cypress/reporter";
 
 export default defineConfig({
+  projectId: "u4gqo5",
   e2e: {
     baseUrl: 'http://localhost:8081',
     env: {

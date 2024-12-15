@@ -31,7 +31,9 @@ jobs:
         run: |
           npx cypress run \
             --browser chrome \
-            --env "login=${{ secrets.USERNAME }},password=${{ secrets.PASSWORD }}"
+            --env "login=${{ secrets.USERNAME }},password=${{ secrets.PASSWORD }}" \
+            --record
+            --key ${{ secrets.CYPRESS_RECORD_KEY }}
       - name: Save screenshots on failure
         uses: actions/upload-artifact@v4 
         if: failure()
