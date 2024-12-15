@@ -64,7 +64,7 @@ jobs:
           ./run-docker-compose-ci.sh
 
       - name: Install Firefox
-        uses: firefox/action@v1
+        uses: browser-actions/setup-firefox@v1
 
       - name: Install dependencies
         run: npm install
