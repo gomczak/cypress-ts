@@ -150,23 +150,23 @@ jobs:
 
       - name: Create index page
         run: |
-          echo "<!DOCTYPE html>" > index.html
-          echo "<html><head><title>Test Reports</title>" >> index.html
-          echo "<style>body{font-family:Arial;margin:20px;} .report{margin:10px 0;}</style>" >> index.html
-          echo "</head><body>" >> index.html
-          echo "<h1>Test Reports</h1>" >> index.html
-          echo "<div id='reports'></div>" >> index.html
-          echo "<script>" >> index.html
-          echo "fetch('https://api.github.com/repos/${{ github.repository }}/contents?ref=gh-pages')" >> index.html
-          echo "  .then(response => response.json())" >> index.html
-          echo "  .then(data => {" >> index.html
-          echo "    const reports = data.filter(item => item.type === 'dir').sort((a, b) => b.name.localeCompare(a.name));" >> index.html
-          echo "    const reportsHtml = reports.map(report => " >> index.html
-          echo "      \`<div class='report'><a href='\${report.name}/index.html'>\${report.name}</a></div>\`" >> index.html
-          echo "    ).join('');" >> index.html
-          echo "    document.getElementById('reports').innerHTML = reportsHtml;" >> index.html
-          echo "  });" >> index.html
-          echo "</script></body></html>" >> index.html
+          echo "<!DOCTYPE html>" > allure-history/index.html
+          echo "<html><head><title>Test Reports</title>" >> allure-history/index.html
+          echo "<style>body{font-family:Arial;margin:20px;} .report{margin:10px 0;}</style>" >> allure-history/index.html
+          echo "</head><body>" >> allure-history/index.html
+          echo "<h1>Test Reports</h1>" >> allure-history/index.html
+          echo "<div id='reports'></div>" >> allure-history/index.html
+          echo "<script>" >> allure-history/index.html
+          echo "fetch('https://api.github.com/repos/${{ github.repository }}/contents?ref=gh-pages')" >> allure-history/index.html
+          echo "  .then(response => response.json())" >> allure-history/index.html
+          echo "  .then(data => {" >> allure-history/index.html
+          echo "    const reports = data.filter(item => item.type === 'dir').sort((a, b) => b.name.localeCompare(a.name));" >> allure-history/index.html
+          echo "    const reportsHtml = reports.map(report => " >> allure-history/index.html
+          echo "      \`<div class='report'><a href='\${report.name}/index.html'>\${report.name}</a></div>\`" >> allure-history/index.html
+          echo "    ).join('');" >> allure-history/index.html
+          echo "    document.getElementById('reports').innerHTML = reportsHtml;" >> allure-history/index.html
+          echo "  });" >> allure-history/index.html
+          echo "</script></body></html>" >> allure-history/index.html
 
       - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
@@ -175,7 +175,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
-          destination_dir: ${{ github.run_number }}_${{ steps.date.outputs.date }}
           keep_files: true
 
       - name: Update index.html
