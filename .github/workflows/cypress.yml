@@ -2,6 +2,18 @@ name: Cypress E2E Tests
 
 on: push
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   chrome-tests:
     runs-on: ubuntu-latest
@@ -41,92 +53,93 @@ jobs:
           name: cypress-screenshots-chrome
           path: cypress/screenshots
           if-no-files-found: ignore
-  firefox-tests:
-    runs-on: ubuntu-latest
+          
+  # firefox-tests:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository with Cypress tests
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository with Cypress tests
+  #       uses: actions/checkout@v4
 
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+  #     - name: Use Node.js 20
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20'
 
-      - name: Checkout external repository (Slawek's localstack)
-        uses: actions/checkout@v4
-        with:
-          repository: "slawekradzyminski/awesome-localstack"
-          path: "awesome-localstack"
+  #     - name: Checkout external repository (Slawek's localstack)
+  #       uses: actions/checkout@v4
+  #       with:
+  #         repository: "slawekradzyminski/awesome-localstack"
+  #         path: "awesome-localstack"
 
-      - name: Run Docker Compose
-        run: |
-          cd awesome-localstack
-          chmod +x run-docker-compose-ci.sh
-          ./run-docker-compose-ci.sh
+  #     - name: Run Docker Compose
+  #       run: |
+  #         cd awesome-localstack
+  #         chmod +x run-docker-compose-ci.sh
+  #         ./run-docker-compose-ci.sh
 
-      - name: Install Firefox
-        uses: browser-actions/setup-firefox@v1
+  #     - name: Install Firefox
+  #       uses: browser-actions/setup-firefox@v1
 
-      - name: Install dependencies
-        run: npm install
+  #     - name: Install dependencies
+  #       run: npm install
 
-      - name: Run tests
-        run: |
-          npx cypress run \
-            --browser firefox \
-            --env "login=${{ secrets.USERNAME }},password=${{ secrets.PASSWORD }}"
+  #     - name: Run tests
+  #       run: |
+  #         npx cypress run \
+  #           --browser firefox \
+  #           --env "login=${{ secrets.USERNAME }},password=${{ secrets.PASSWORD }}"
 
-      - name: Save screenshots on failure
-        uses: actions/upload-artifact@v4 
-        if: failure()
-        with:
-          name: cypress-screenshots-ff
-          path: cypress/screenshots
-          if-no-files-found: ignore
-  edge-tests:
-    runs-on: ubuntu-latest
+  #     - name: Save screenshots on failure
+  #       uses: actions/upload-artifact@v4 
+  #       if: failure()
+  #       with:
+  #         name: cypress-screenshots-ff
+  #         path: cypress/screenshots
+  #         if-no-files-found: ignore
+  # edge-tests:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository with Cypress tests
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository with Cypress tests
+  #       uses: actions/checkout@v4
       
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+  #     - name: Use Node.js 20
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20'
       
-      - name: Checkout external repository (Slawek's localstack)
-        uses: actions/checkout@v4
-        with:
-          repository: "slawekradzyminski/awesome-localstack"
-          path: "awesome-localstack"
+  #     - name: Checkout external repository (Slawek's localstack)
+  #       uses: actions/checkout@v4
+  #       with:
+  #         repository: "slawekradzyminski/awesome-localstack"
+  #         path: "awesome-localstack"
       
-      - name: Run Docker Compose
-        run: |
-          cd awesome-localstack
-          chmod +x run-docker-compose-ci.sh
-          ./run-docker-compose-ci.sh
+  #     - name: Run Docker Compose
+  #       run: |
+  #         cd awesome-localstack
+  #         chmod +x run-docker-compose-ci.sh
+  #         ./run-docker-compose-ci.sh
       
-      - name: Install Edge
-        run: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft-archive-keyring.gpg && sudo mv microsoft-archive-keyring.gpg /usr/share/keyrings/ && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/edge stable main" | sudo tee /etc/apt/sources.list.d/microsoft-edge-stable.list && sudo apt update && sudo apt install -y microsoft-edge-stable
+  #     - name: Install Edge
+  #       run: curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft-archive-keyring.gpg && sudo mv microsoft-archive-keyring.gpg /usr/share/keyrings/ && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/edge stable main" | sudo tee /etc/apt/sources.list.d/microsoft-edge-stable.list && sudo apt update && sudo apt install -y microsoft-edge-stable
         
-      - name: Install dependencies
-        run: npm install
+  #     - name: Install dependencies
+  #       run: npm install
       
-      - name: Run tests
-        run: |
-          npx cypress run \
-            --browser edge \
-            --env "login=${{ secrets.USERNAME }},password=${{ secrets.PASSWORD }}"
+  #     - name: Run tests
+  #       run: |
+  #         npx cypress run \
+  #           --browser edge \
+  #           --env "login=${{ secrets.USERNAME }},password=${{ secrets.PASSWORD }}"
       
-      - name: Save screenshots on failure
-        uses: actions/upload-artifact@v4 
-        if: failure()
-        with:
-          name: cypress-screenshots-edge
-          path: cypress/screenshots
-          if-no-files-found: ignore
+  #     - name: Save screenshots on failure
+  #       uses: actions/upload-artifact@v4 
+  #       if: failure()
+  #       with:
+  #         name: cypress-screenshots-edge
+  #         path: cypress/screenshots
+  #         if-no-files-found: ignore
       
       - name: Load test report history
         uses: actions/checkout@v4
