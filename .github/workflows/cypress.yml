@@ -144,36 +144,11 @@ jobs:
           allure_history: allure-history
           allure_results: allure-results
 
-      - name: Get current date
-        id: date
-        run: echo "date=$(date +'%Y-%m-%d_%H-%M')" >> $GITHUB_OUTPUT
-
-      - name: Create index page
-        run: |
-          mkdir -p gh-pages
-          echo "<!DOCTYPE html>" > gh-pages/index.html
-          echo "<html><head><title>Test Reports</title>" >> gh-pages/index.html
-          echo "<style>body{font-family:Arial;margin:20px;} .report{margin:10px 0;}</style>" >> gh-pages/index.html
-          echo "</head><body>" >> gh-pages/index.html
-          echo "<h1>Test Reports</h1>" >> gh-pages/index.html
-          echo "<div id='reports'></div>" >> gh-pages/index.html
-          echo "<script>" >> gh-pages/index.html
-          echo "fetch('https://api.github.com/repos/${{ github.repository }}/contents/allure-history?ref=gh-pages')" >> gh-pages/index.html
-          echo "  .then(response => response.json())" >> gh-pages/index.html
-          echo "  .then(data => {" >> gh-pages/index.html
-          echo "    const reports = data.filter(item => item.type === 'dir').sort((a, b) => b.name.localeCompare(a.name));" >> gh-pages/index.html
-          echo "    const reportsHtml = reports.map(report => " >> gh-pages/index.html
-          echo "      \`<div class='report'><a href='allure-history/\${report.name}/index.html'>\${report.name}</a></div>\`" >> gh-pages/index.html
-          echo "    ).join('');" >> gh-pages/index.html
-          echo "    document.getElementById('reports').innerHTML = reportsHtml;" >> gh-pages/index.html
-          echo "  });" >> gh-pages/index.html
-          echo "</script></body></html>" >> gh-pages/index.html
-
       - name: Publish test report and index
         uses: peaceiris/actions-gh-pages@v3
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: gh-pages
+          publish_dir: allure-history
           keep_files: true
