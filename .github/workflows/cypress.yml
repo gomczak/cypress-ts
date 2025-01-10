@@ -146,6 +146,8 @@ jobs:
 
       - name: Create index page
         run: |
+          mkdir -p allure-history
+          chmod 777 allure-history
           echo "<!DOCTYPE html>" > allure-history/index.html
           echo "<html><head><title>Test Reports</title>" >> allure-history/index.html
           echo "<style>body{font-family:Arial;margin:20px;} .report{margin:10px 0;}</style>" >> allure-history/index.html
