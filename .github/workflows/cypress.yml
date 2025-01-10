@@ -140,15 +140,28 @@ jobs:
         uses: simple-elf/allure-report-action@v1.7
         if: always()
         with:
-          gh_pages: gh-pages
-          allure_history: allure-history
           allure_results: allure-results
+          allure_report: allure-report
+          allure_history: allure-history
 
-      - name: Publish test report and index
+      - name: Create index page
+        run: |
+          echo "<!DOCTYPE html>" > allure-history/index.html
+          echo "<html><head><title>Test Reports</title>" >> allure-history/index.html
+          echo "<style>body{font-family:Arial;margin:20px;} .report{margin:10px 0;}</style>" >> allure-history/index.html
+          echo "</head><body>" >> allure-history/index.html
+          echo "<h1>Test Reports</h1>" >> allure-history/index.html
+          echo "<ul>" >> allure-history/index.html
+          echo "<li><a href='./latest/index.html'>Latest Report</a></li>" >> allure-history/index.html
+          echo "<li><a href='./history/index.html'>History</a></li>" >> allure-history/index.html
+          echo "</ul>" >> allure-history/index.html
+          echo "</body></html>" >> allure-history/index.html
+
+      - name: Publish test report
         uses: peaceiris/actions-gh-pages@v3
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
-          keep_files: true
+          force_orphan: true
