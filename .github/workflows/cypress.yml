@@ -158,12 +158,12 @@ jobs:
           echo "<h1>Test Reports</h1>" >> gh-pages/index.html
           echo "<div id='reports'></div>" >> gh-pages/index.html
           echo "<script>" >> gh-pages/index.html
-          echo "fetch('https://api.github.com/repos/${{ github.repository }}/contents?ref=gh-pages')" >> gh-pages/index.html
+          echo "fetch('https://api.github.com/repos/${{ github.repository }}/contents/allure-history?ref=gh-pages')" >> gh-pages/index.html
           echo "  .then(response => response.json())" >> gh-pages/index.html
           echo "  .then(data => {" >> gh-pages/index.html
-          echo "    const reports = data.filter(item => item.type === 'dir' && item.name !== 'gh-pages').sort((a, b) => b.name.localeCompare(a.name));" >> gh-pages/index.html
+          echo "    const reports = data.filter(item => item.type === 'dir').sort((a, b) => b.name.localeCompare(a.name));" >> gh-pages/index.html
           echo "    const reportsHtml = reports.map(report => " >> gh-pages/index.html
-          echo "      \`<div class='report'><a href='\${report.name}/index.html'>\${report.name}</a></div>\`" >> gh-pages/index.html
+          echo "      \`<div class='report'><a href='allure-history/\${report.name}/index.html'>\${report.name}</a></div>\`" >> gh-pages/index.html
           echo "    ).join('');" >> gh-pages/index.html
           echo "    document.getElementById('reports').innerHTML = reportsHtml;" >> gh-pages/index.html
           echo "  });" >> gh-pages/index.html
