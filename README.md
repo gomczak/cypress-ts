@@ -9,3 +9,4 @@ Create `cypress.env.json` using the template from `cypress.env.json.example`
 }
 ```
 test
+testrun
