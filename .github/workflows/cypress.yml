@@ -1,0 +1,9 @@
+name: keep tests results history
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  chrome-tests:
+    runs-on: ubuntu-latest
