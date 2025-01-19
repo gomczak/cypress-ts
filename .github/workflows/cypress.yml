@@ -1,4 +1,4 @@
-name: keep tests results history
+name: keep tests results history TEST
 
 on: 
   push:
