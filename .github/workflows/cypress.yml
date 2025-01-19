@@ -1,7 +1,7 @@
-name: keep tests results history TEST
+name: keep tests results history
 
 on: 
-  push:
+  # push:
   workflow_dispatch:
 
 permissions:
