@@ -1,6 +1,8 @@
 name: keep tests results history
 
-on: push
+on: 
+  push:
+  workflow_dispatch:
 
 permissions:
   contents: write
